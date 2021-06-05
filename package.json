@@ -1,0 +1,19 @@
+{
+  "name": "sortingvisualizer",
+  "version": "1.0.0",
+  "description": "A visualizer for various sorting algos",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpcodigo/sortingVisualizer.git"
+  },
+  "author": "Jesse Priest",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpcodigo/sortingVisualizer/issues"
+  },
+  "homepage": "https://github.com/jpcodigo/sortingVisualizer#readme"
+}
