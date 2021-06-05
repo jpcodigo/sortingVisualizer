@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+body {
+  background-image: radial-gradient(rgb(78, 77, 77), black);
+}
+
+#container {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.array-bar {
+  width: 3px;
+  background-image: linear-gradient(blue, black);
+  display: inline-block;
+  margin: 0 1px;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-image: linear-gradient(to right, rgb(78, 77, 77), black);
+  height: 8rem;
+  border-bottom: 2px solid lime;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn {
+  margin-right: 2rem;
+  padding: 1rem;
+}
+
+.metal {
+  position: relative;
+  outline: none;
+
+  text-align: center;
+  color: hsla(0, 0%, 20%, 1);
+  text-shadow: hsla(0, 0%, 40%, 0.5) 0 -1px 0, hsla(0, 0%, 100%, 0.6) 0 2px 1px;
+
+  background-color: hsl(0, 0%, 90%);
+
+  transition: color 0.2s;
+}
+
+.linear {
+  border-radius: 0.5rem;
+  background-image: -webkit-repeating-linear-gradient(
+      left,
+      hsla(0, 0%, 100%, 0) 0%,
+      hsla(0, 0%, 100%, 0) 6%,
+      hsla(0, 0%, 100%, 0.1) 7.5%
+    ),
+    -webkit-repeating-linear-gradient(left, hsla(0, 0%, 0%, 0) 0%, hsla(
+            0,
+            0%,
+            0%,
+            0
+          )
+          4%, hsla(0, 0%, 0%, 0.03) 4.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0, 0%, 100%, 0) 0%, hsla(
+            0,
+            0%,
+            100%,
+            0
+          )
+          1.2%, hsla(0, 0%, 100%, 0.15) 2.2%),
+    linear-gradient(
+      180deg,
+      hsl(0, 0%, 78%) 0%,
+      hsl(0, 0%, 90%) 47%,
+      hsl(0, 0%, 78%) 53%,
+      hsl(0, 0%, 70%) 100%
+    );
+}
+
+/*# sourceMappingURL=index.fc33897e.css.map */
