@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jpcodigo/sortingVisualizer/issues"
   },
-  "homepage": "https://github.com/jpcodigo/sortingVisualizer#readme"
+  "homepage": "https://github.com/jpcodigo/sortingVisualizer#readme",
+  "dependencies": {
+    "node-modules": "^1.0.1"
+  }
 }
