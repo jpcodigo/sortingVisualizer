@@ -1,7 +1,7 @@
 export const state = {
   array: [],
 };
-
+// check for viewport change event, if then function that generates new arrays, else overflow hidden
 export function resetArray() {
   const array = [];
   const barCount = document.documentElement.clientWidth / 5.5;
