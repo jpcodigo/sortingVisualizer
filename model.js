@@ -4,7 +4,7 @@ export const state = {
 
 export function resetArray() {
   const array = [];
-  const barCount = screen.width / 5.5;
+  const barCount = document.documentElement.clientWidth / 5.5;
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
   }
