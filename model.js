@@ -96,6 +96,7 @@ export function quickSort(arr) {
 
   while (stack.length) {
     const { x, y } = stack.shift();
+    animations.push([x, y, "check"]);
     const pivotIdx = partitionHigh(arr, x, y);
     if (pivotIdx - 1 > x) {
       stack.push({ x: x, y: pivotIdx - 1 });
@@ -109,7 +110,6 @@ export function quickSort(arr) {
 }
 
 function partitionHigh(arr, low, high) {
-  animations.push([high]); // if length 1, pivot color
   let pivot = arr[high];
   let i = low;
 
@@ -117,6 +117,8 @@ function partitionHigh(arr, low, high) {
     if (arr[j] <= pivot) {
       animations.push([i, j, "swap"]);
       i++;
+    } else {
+      animations.push([j + 1]);
     }
   }
   animations.push([i, high, "swap"]);
