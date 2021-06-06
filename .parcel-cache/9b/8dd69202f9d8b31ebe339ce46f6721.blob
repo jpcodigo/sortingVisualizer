@@ -541,30 +541,29 @@ function doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animati
 }
 function quickSort(arr) {
   let stack = [];
-  let start = 0;
-  let end = arr.length - 1;
+  let i = 0;
   stack.push({
-    x: start,
-    y: end
+    x: 0,
+    y: arr.length - 1
   });
   while (stack.length) {
+    i++;
     const {x, y} = stack.shift();
     const pivotIdx = partitionHigh(arr, x, y);
     if (pivotIdx - 1 > x) {
       stack.push({
         x: x,
-        y: pivotIdx - 1
+        t: pivotIdx - 1
       });
-      console.log(stack);
+      console.log(stack + " - " + i);
     }
     if (pivotIdx + 1 < y) {
       stack.push({
         x: pivotIdx + 1,
         y: y
       });
-      console.log(stack);
     }
-    console.log(arr);
+    console.log(arr + " - " + i);
   }
   console.log(arr);
 }
@@ -672,4 +671,4 @@ function mergeSort(animations) {
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["6mXFT","4QWci"], "4QWci", "parcelRequire10b2")
 
-//# sourceMappingURL=index.fc70f76c.js.map
+//# sourceMappingURL=index.HASH_REF_d1860b281e773ef683ae2c3ffc70f76c.js.map

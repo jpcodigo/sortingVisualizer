@@ -553,7 +553,7 @@ function quickSort(arr) {
     if (pivotIdx - 1 > x) {
       stack.push({
         x: x,
-        y: pivotIdx - 1
+        t: pivotIdx - 1
       });
       console.log(stack);
     }
@@ -562,7 +562,6 @@ function quickSort(arr) {
         x: pivotIdx + 1,
         y: y
       });
-      console.log(stack);
     }
     console.log(arr);
   }
@@ -672,4 +671,4 @@ function mergeSort(animations) {
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["6mXFT","4QWci"], "4QWci", "parcelRequire10b2")
 
-//# sourceMappingURL=index.fc70f76c.js.map
+//# sourceMappingURL=index.HASH_REF_d1860b281e773ef683ae2c3ffc70f76c.js.map

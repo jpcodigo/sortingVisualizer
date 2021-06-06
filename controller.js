@@ -22,4 +22,7 @@ function appLoaded() {
 }
 
 appLoaded();
-model.quickSort([2, 4, 6, 8, 1, 3, 5, 7, 9]);
+let arr3 = [2, 4, 6, 8, 1, 3, 5, 7, 9];
+model.quickSort(arr3);
+
+console.log(arr3);

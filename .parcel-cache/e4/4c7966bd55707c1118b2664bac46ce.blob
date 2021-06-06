@@ -1,54 +1,48 @@
-export const state = {
-  array: [],
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "state", function () {
+  return state;
+});
+_parcelHelpers.export(exports, "resetArray", function () {
+  return resetArray;
+});
+_parcelHelpers.export(exports, "getMergeSortAnimations", function () {
+  return getMergeSortAnimations;
+});
+_parcelHelpers.export(exports, "quickSort", function () {
+  return quickSort;
+});
+const state = {
+  array: []
 };
-
-export function resetArray() {
+function resetArray() {
   const array = [];
   const barCount = screen.width / 5.5;
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
   }
-  state.array = { array };
+  state.array = {
+    array
+  };
 }
-
 function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-// ALGORITHMS
-
-// MERGE SORT
-
-export function getMergeSortAnimations(array) {
+function getMergeSortAnimations(array) {
   const animations = [];
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
   mergeSortHelper(array, 0, array.length - 1, auxiliaryArray, animations);
   return animations;
 }
-
-function mergeSortHelper(
-  mainArray,
-  startIdx,
-  endIdx,
-  auxiliaryArray,
-  animations
-) {
+function mergeSortHelper(mainArray, startIdx, endIdx, auxiliaryArray, animations) {
   if (startIdx === endIdx) return;
   const middleIdx = Math.floor((startIdx + endIdx) / 2);
   mergeSortHelper(auxiliaryArray, startIdx, middleIdx, mainArray, animations);
   mergeSortHelper(auxiliaryArray, middleIdx + 1, endIdx, mainArray, animations);
   doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animations);
 }
-
-function doMerge(
-  mainArray,
-  startIdx,
-  middleIdx,
-  endIdx,
-  auxiliaryArray,
-  animations
-) {
+function doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animations) {
   let k = startIdx;
   let i = startIdx;
   let j = middleIdx + 1;
@@ -76,42 +70,42 @@ function doMerge(
     mainArray[k++] = auxiliaryArray[j++];
   }
 }
-
-// QUICK SORT
-
-export function quickSort(arr) {
+function quickSort(arr) {
   let stack = [];
   let start = 0;
   let end = arr.length - 1;
-
-  stack.push({ x: start, y: end });
-
+  stack.push({
+    x: start,
+    y: end
+  });
   while (stack.length) {
-    const { x, y } = stack.shift();
+    const {x, y} = stack.shift();
     const pivotIdx = partitionHigh(arr, x, y);
     if (pivotIdx - 1 > x) {
-      stack.push({ x: x, y: pivotIdx - 1 });
+      stack.push({
+        x: x,
+        t: pivotIdx - 1
+      });
       console.log(stack);
     }
     if (pivotIdx + 1 < y) {
-      stack.push({ x: pivotIdx + 1, y: y });
+      stack.push({
+        x: pivotIdx + 1,
+        y: y
+      });
       console.log(stack);
     }
-    console.log(arr);
   }
   console.log(arr);
 }
-
 function swap(arr, left, right) {
   const temp = arr[left];
   arr[left] = arr[right];
   arr[right] = temp;
 }
-
 function partitionHigh(arr, low, high) {
   let pivot = arr[high];
   let i = low;
-
   for (let j = low; j < high; j++) {
     if (arr[j] <= pivot) {
       swap(arr, i, j);
