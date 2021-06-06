@@ -1,10 +1,11 @@
 export const state = {
   array: [],
 };
-// check for viewport change event, if then function that generates new arrays, else overflow hidden
+let viewportWidth = document.documentElement.clientWidth;
+// viewport change event or media queries?
 export function resetArray() {
   const array = [];
-  const barCount = document.documentElement.clientWidth / 5.5;
+  const barCount = viewportWidth / 5.5;
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
   }
