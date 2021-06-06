@@ -539,13 +539,6 @@ function doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animati
     mainArray[k++] = auxiliaryArray[j++];
   }
 }
-// QUICK SORT
-function getQuickSortAnimations(arr) {
-  const animations = [];
-  if (array.length <= 1) return array;
-  quickSort(arr);
-  return animations;
-}
 function quickSort(arr) {
   let stack = [];
   let start = 0;
@@ -573,18 +566,21 @@ function quickSort(arr) {
   }
   console.log(arr);
 }
+function swap(arr, left, right) {
+  const temp = arr[left];
+  arr[left] = arr[right];
+  arr[right] = temp;
+}
 function partitionHigh(arr, low, high) {
-  animations.push([high]);
-  // if length 1, pivot color
   let pivot = arr[high];
   let i = low;
   for (let j = low; j < high; j++) {
     if (arr[j] <= pivot) {
-      animations.push([i, j, "swap"]);
+      swap(arr, i, j);
       i++;
     }
   }
-  animations.push([i, high, "swap"]);
+  swap(arr, i, high);
   return i;
 }
 
@@ -674,4 +670,4 @@ function mergeSort(animations) {
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["6mXFT","4QWci"], "4QWci", "parcelRequire10b2")
 
-//# sourceMappingURL=index.fc70f76c.js.map
+//# sourceMappingURL=index.HASH_REF_d1860b281e773ef683ae2c3ffc70f76c.js.map
