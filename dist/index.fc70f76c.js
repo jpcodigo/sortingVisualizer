@@ -446,6 +446,7 @@ var _model = require("./model");
 var _view = require("./view");
 const genBtn = document.getElementById("generate");
 const mergeBtn = document.getElementById("merge");
+const quickBtn = document.getElementById("quick");
 genBtn.addEventListener("click", () => {
   _model.resetArray();
   const {array} = _model.state.array;
@@ -454,7 +455,13 @@ genBtn.addEventListener("click", () => {
 mergeBtn.addEventListener("click", () => {
   const {array} = _model.state.array;
   const animations = _model.getMergeSortAnimations(array);
+  console.log(animations[0]);
   _view.mergeSort(animations);
+});
+quickBtn.addEventListener("click", () => {
+  const {array} = _model.state.array;
+  const animations = _model.getQuickSortAnimations(array);
+  _view.quickSort(animations);
 });
 function appLoaded() {
   _model.resetArray();
@@ -462,9 +469,6 @@ function appLoaded() {
   _view.render(array);
 }
 appLoaded();
-let arr3 = [2, 4, 6, 8, 1, 3, 5, 7, 9];
-_model.quickSort(arr3);
-console.log(arr3);
 
 },{"./model":"4fBCO","./view":"6bVbH"}],"4fBCO":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
@@ -478,15 +482,16 @@ _parcelHelpers.export(exports, "resetArray", function () {
 _parcelHelpers.export(exports, "getMergeSortAnimations", function () {
   return getMergeSortAnimations;
 });
-_parcelHelpers.export(exports, "quickSort", function () {
-  return quickSort;
+_parcelHelpers.export(exports, "getQuickSortAnimations", function () {
+  return getQuickSortAnimations;
 });
 const state = {
   array: []
 };
+let viewportWidth = document.documentElement.clientWidth;
 function resetArray() {
   const array = [];
-  const barCount = screen.width / 5.5;
+  const barCount = viewportWidth / 5.5;
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
   }
@@ -539,7 +544,6 @@ function doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animati
     mainArray[k++] = auxiliaryArray[j++];
   }
 }
-// QUICK SORT
 function getQuickSortAnimations(arr) {
   const animations = [];
   if (array.length <= 1) return array;
@@ -556,6 +560,7 @@ function quickSort(arr) {
   });
   while (stack.length) {
     const {x, y} = stack.shift();
+    animations.push([x, y, "check"]);
     const pivotIdx = partitionHigh(arr, x, y);
     if (pivotIdx - 1 > x) {
       stack.push({
@@ -574,14 +579,14 @@ function quickSort(arr) {
   console.log(arr);
 }
 function partitionHigh(arr, low, high) {
-  animations.push([high]);
-  // if length 1, pivot color
   let pivot = arr[high];
   let i = low;
   for (let j = low; j < high; j++) {
     if (arr[j] <= pivot) {
       animations.push([i, j, "swap"]);
       i++;
+    } else {
+      animations.push([j + 1]);
     }
   }
   animations.push([i, high, "swap"]);
@@ -639,6 +644,9 @@ _parcelHelpers.export(exports, "render", function () {
 _parcelHelpers.export(exports, "mergeSort", function () {
   return mergeSort;
 });
+_parcelHelpers.export(exports, "quickSort", function () {
+  return quickSort;
+});
 const container = document.getElementById("array-container");
 const animationSpeed = 1.5;
 function render(array) {
@@ -651,16 +659,15 @@ function render(array) {
 }
 function mergeSort(animations) {
   for (let i = 0; i < animations.length; i++) {
+    console.log(animations[i]);
     const arrayBars = document.getElementsByClassName("array-bar");
     const isColorChange = i % 3 !== 2;
     if (isColorChange) {
-      const [barOneIdx, barTwoIdx] = animations[i];
+      const [barOneIdx] = animations[i];
       const barOneStyle = arrayBars[barOneIdx].style;
-      const barTwoStyle = arrayBars[barTwoIdx].style;
       const gradient = i % 3 === 0 ? "linear-gradient(black, lime)" : "linear-gradient(blue, black)";
       setTimeout(() => {
         barOneStyle.backgroundImage = gradient;
-        barTwoStyle.backgroundImage = gradient;
       }, i * animationSpeed);
     } else {
       setTimeout(() => {
@@ -668,6 +675,24 @@ function mergeSort(animations) {
         const barOneStyle = arrayBars[barOneIdx].style;
         barOneStyle.height = `${newHeight / 10}rem`;
       }, i * animationSpeed);
+    }
+  }
+}
+function quickSort(animations) {
+  for (const animation of animations) {
+    const arrayBars = document.getElementsByClassName("array-bar");
+    if (animation[2] === "check") {
+      const start = animation[0];
+      const pivot = animation[1];
+      arrayBars[start - 1].style = "linear-gradient(black, blue)";
+      arrayBars[start].style = "linear-gradient(black, lime)";
+      arrayBars[pivot].style = "linear-gradient(black, purple)";
+    } else if (animation[2] === "swap") {
+      const left = animation[0];
+      const right = animation[1];
+      const temp = arrayBars[left];
+      arrayBars[left] = arrayBars[right];
+      arrayBars[right] = temp;
     }
   }
 }

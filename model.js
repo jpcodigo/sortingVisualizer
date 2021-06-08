@@ -80,14 +80,14 @@ function doMerge(
 
 // QUICK SORT
 
-function getQuickSortAnimations(arr) {
+export function getQuickSortAnimations(arr) {
   const animations = [];
   if (array.length <= 1) return array;
   quickSort(arr);
   return animations;
 }
 
-export function quickSort(arr) {
+function quickSort(arr) {
   let stack = [];
   let start = 0;
   let end = arr.length - 1;
