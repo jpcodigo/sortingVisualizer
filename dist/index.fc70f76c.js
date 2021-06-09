@@ -687,11 +687,9 @@ function quickSort(animations) {
     const arrayBars = document.getElementsByClassName("array-bar");
     const [idx, second] = animations[i];
     if (second === "pivot") {
-      for (let p = 0; p < arrayBars.length; p++) {
-        arrayBars[p].style.backgroundImage = "linear-gradient(blue, black)";
-      }
       const pivotStyle = arrayBars[idx].style;
       setTimeout(() => {
+        for (const bar of arrayBars) bar.style.backgroundImage = "linear-gradient(blue, black)";
         pivotStyle.backgroundImage = "linear-gradient(purple, purple)";
       }, i * animationSpeed);
     }
