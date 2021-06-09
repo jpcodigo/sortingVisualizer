@@ -13,7 +13,6 @@ genBtn.addEventListener("click", () => {
 mergeBtn.addEventListener("click", () => {
   const { array } = model.state.array;
   const animations = model.getMergeSortAnimations(array);
-  console.log(animations[0]);
   view.mergeSort(animations);
 });
 quickBtn.addEventListener("click", () => {

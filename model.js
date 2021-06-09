@@ -82,12 +82,12 @@ function doMerge(
 
 export function getQuickSortAnimations(arr) {
   const animations = [];
-  if (array.length <= 1) return array;
-  quickSort(arr);
+  if (arr.length <= 1) return arr;
+  quickSort(arr, animations);
   return animations;
 }
 
-function quickSort(arr) {
+function quickSort(arr, animations) {
   let stack = [];
   let start = 0;
   let end = arr.length - 1;
@@ -96,31 +96,36 @@ function quickSort(arr) {
 
   while (stack.length) {
     const { x, y } = stack.shift();
-    animations.push([x, y, "check"]);
-    const pivotIdx = partitionHigh(arr, x, y);
+    animations.push([y, "pivot"]);
+    const pivotIdx = partitionHigh(arr, x, y, animations);
     if (pivotIdx - 1 > x) {
       stack.push({ x: x, y: pivotIdx - 1 });
     }
     if (pivotIdx + 1 < y) {
       stack.push({ x: pivotIdx + 1, y: y });
     }
-    console.log(arr);
   }
-  console.log(arr);
 }
 
-function partitionHigh(arr, low, high) {
+function partitionHigh(arr, low, high, animations) {
   let pivot = arr[high];
   let i = low;
 
   for (let j = low; j < high; j++) {
+    animations.push([j, "adv"]);
     if (arr[j] <= pivot) {
-      animations.push([i, j, "swap"]);
+      animations.push([i, "swap"]);
+      swap(arr, i, j);
       i++;
-    } else {
-      animations.push([j + 1]);
     }
   }
-  animations.push([i, high, "swap"]);
+  animations.push([i, high]);
+  swap(arr, i, high);
   return i;
+}
+
+function swap(arr, left, right) {
+  const temp = arr[left];
+  arr[left] = arr[right];
+  arr[right] = temp;
 }

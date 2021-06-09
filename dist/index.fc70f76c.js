@@ -455,7 +455,6 @@ genBtn.addEventListener("click", () => {
 mergeBtn.addEventListener("click", () => {
   const {array} = _model.state.array;
   const animations = _model.getMergeSortAnimations(array);
-  console.log(animations[0]);
   _view.mergeSort(animations);
 });
 quickBtn.addEventListener("click", () => {
@@ -546,11 +545,11 @@ function doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animati
 }
 function getQuickSortAnimations(arr) {
   const animations = [];
-  if (array.length <= 1) return array;
-  quickSort(arr);
+  if (arr.length <= 1) return arr;
+  quickSort(arr, animations);
   return animations;
 }
-function quickSort(arr) {
+function quickSort(arr, animations) {
   let stack = [];
   let start = 0;
   let end = arr.length - 1;
@@ -560,8 +559,8 @@ function quickSort(arr) {
   });
   while (stack.length) {
     const {x, y} = stack.shift();
-    animations.push([x, y, "check"]);
-    const pivotIdx = partitionHigh(arr, x, y);
+    animations.push([y, "pivot"]);
+    const pivotIdx = partitionHigh(arr, x, y, animations);
     if (pivotIdx - 1 > x) {
       stack.push({
         x: x,
@@ -574,23 +573,27 @@ function quickSort(arr) {
         y: y
       });
     }
-    console.log(arr);
   }
-  console.log(arr);
 }
-function partitionHigh(arr, low, high) {
+function partitionHigh(arr, low, high, animations) {
   let pivot = arr[high];
   let i = low;
   for (let j = low; j < high; j++) {
+    animations.push([j, "adv"]);
     if (arr[j] <= pivot) {
-      animations.push([i, j, "swap"]);
+      animations.push([i, "swap"]);
+      swap(arr, i, j);
       i++;
-    } else {
-      animations.push([j + 1]);
     }
   }
-  animations.push([i, high, "swap"]);
+  animations.push([i, high]);
+  swap(arr, i, high);
   return i;
+}
+function swap(arr, left, right) {
+  const temp = arr[left];
+  arr[left] = arr[right];
+  arr[right] = temp;
 }
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"5gA8y":[function(require,module,exports) {
@@ -659,15 +662,16 @@ function render(array) {
 }
 function mergeSort(animations) {
   for (let i = 0; i < animations.length; i++) {
-    console.log(animations[i]);
     const arrayBars = document.getElementsByClassName("array-bar");
     const isColorChange = i % 3 !== 2;
     if (isColorChange) {
-      const [barOneIdx] = animations[i];
+      const [barOneIdx, barTwoIdx] = animations[i];
       const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
       const gradient = i % 3 === 0 ? "linear-gradient(black, lime)" : "linear-gradient(blue, black)";
       setTimeout(() => {
         barOneStyle.backgroundImage = gradient;
+        barTwoStyle.backgroundImage = gradient;
       }, i * animationSpeed);
     } else {
       setTimeout(() => {
@@ -679,20 +683,17 @@ function mergeSort(animations) {
   }
 }
 function quickSort(animations) {
-  for (const animation of animations) {
+  for (let i = 0; i < animations.length; i++) {
     const arrayBars = document.getElementsByClassName("array-bar");
-    if (animation[2] === "check") {
-      const start = animation[0];
-      const pivot = animation[1];
-      arrayBars[start - 1].style = "linear-gradient(black, blue)";
-      arrayBars[start].style = "linear-gradient(black, lime)";
-      arrayBars[pivot].style = "linear-gradient(black, purple)";
-    } else if (animation[2] === "swap") {
-      const left = animation[0];
-      const right = animation[1];
-      const temp = arrayBars[left];
-      arrayBars[left] = arrayBars[right];
-      arrayBars[right] = temp;
+    const [idx, second] = animations[i];
+    if (second === "pivot") {
+      for (let p = 0; p < arrayBars.length; p++) {
+        arrayBars[p].style.backgroundImage = "linear-gradient(blue, black)";
+      }
+      const pivotStyle = arrayBars[idx].style;
+      setTimeout(() => {
+        pivotStyle.backgroundImage = "linear-gradient(purple, purple)";
+      }, i * animationSpeed);
     }
   }
 }
