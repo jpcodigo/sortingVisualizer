@@ -21,6 +21,10 @@ body {
 #container {
   height: 100vh;
   width: 100vw;
+}
+
+#array-container {
+  height: 100%;
 
   display: flex;
   justify-content: center;
@@ -28,7 +32,7 @@ body {
 }
 
 .array-bar {
-  width: 3px;
+  width: 50px;
   background-image: linear-gradient(blue, black);
   display: inline-block;
   margin: 0 1px;

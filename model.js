@@ -1,11 +1,11 @@
 export const state = {
   array: [],
 };
-let viewportWidth = document.documentElement.clientWidth;
-// viewport change event or media queries?
+//let viewportWidth = document.documentElement.clientWidth;
+// viewport change event or media queries? viewportWidth / 5.5
 export function resetArray() {
   const array = [];
-  const barCount = viewportWidth / 5.5;
+  const barCount = 30;
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
   }
@@ -87,40 +87,32 @@ export function getQuickSortAnimations(arr) {
   return animations;
 }
 
-function quickSort(arr, animations) {
-  let stack = [];
-  let start = 0;
-  let end = arr.length - 1;
-
-  stack.push({ x: start, y: end });
-
-  while (stack.length) {
-    const { x, y } = stack.shift();
-    animations.push([y, "pivot"]);
-    const pivotIdx = partitionHigh(arr, x, y, animations);
-    if (pivotIdx - 1 > x) {
-      stack.push({ x: x, y: pivotIdx - 1 });
-    }
-    if (pivotIdx + 1 < y) {
-      stack.push({ x: pivotIdx + 1, y: y });
-    }
+function quickSort(arr, animations, start = 0, end = arr.length - 1) {
+  let idx = partition(arr, animations, start, end);
+  if (start < idx - 1) {
+    quickSort(arr, animations, start, idx - 1);
+  }
+  if (idx < end) {
+    quickSort(arr, animations, idx);
   }
 }
 
-function partitionHigh(arr, low, high, animations) {
-  let pivot = arr[high];
-  let i = low;
-
-  for (let j = low; j < high; j++) {
-    animations.push([j, "adv"]);
-    if (arr[j] <= pivot) {
-      animations.push([i, "swap"]);
+function partition(arr, animations, start, end) {
+  let pivotIdx = Math.floor((start + end) / 2);
+  let pivot = arr[pivotIdx];
+  let i = start;
+  let j = end;
+  animations.push(["pivot", pivotIdx], ["start", start], ["end", end]);
+  while (i <= j) {
+    while (arr[i] < pivot) i++;
+    while (arr[j] > pivot) j--;
+    if (i <= j) {
+      animations.push(["swap", i, j]);
       swap(arr, i, j);
       i++;
+      j--;
     }
   }
-  animations.push([i, high]);
-  swap(arr, i, high);
   return i;
 }
 

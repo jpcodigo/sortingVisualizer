@@ -1,5 +1,5 @@
 const container = document.getElementById("array-container");
-const animationSpeed = 1.5;
+const animationSpeed = 500;
 
 export function render(array) {
   while (container.firstChild) {
@@ -7,10 +7,12 @@ export function render(array) {
   }
 
   array.map((value) => {
+    let i = 1;
     container.insertAdjacentHTML(
       "beforeend",
-      `<div class="array-bar" style="height: ${value / 10}rem"></div>`
+      `<div class="array-bar" style="height: ${value / 10}rem;"></div>`
     );
+    i++;
   });
 }
 
@@ -54,6 +56,46 @@ export function quickSort(animations) {
         for (const bar of arrayBars)
           bar.style.backgroundImage = "linear-gradient(blue, black)";
         pivotStyle.backgroundImage = "linear-gradient(purple, purple)";
+      }, i * animationSpeed);
+    } else if (second === "adv") {
+      const advStyle = arrayBars[idx].style;
+      setTimeout(() => {
+        if (idx > 0) {
+          const prevStyle = arrayBars[idx - 1].style;
+          if (prevStyle.backgroundImage === "linear-gradient(lime, lime)")
+            prevStyle.backgroundImage = "linear-gradient(blue, black)";
+        }
+        advStyle.backgroundImage = "linear-gradient(lime, lime)";
+      }, i * animationSpeed);
+    } else if (second === "swap") {
+      const adv = animations[i - 1][0];
+      if (idx === adv) {
+        const waitStyle = arrayBars[idx].style;
+        setTimeout(() => {
+          waitStyle.backgroundImage = "linear-gradient(red, red)";
+        }, i * animationSpeed);
+      } else {
+        const temp = arrayBars[idx].outerHTML;
+
+        setTimeout(() => {
+          arrayBars[idx].outerHTML = arrayBars[adv].outerHTML;
+          arrayBars[adv].outerHTML = temp;
+          arrayBars[adv].style.backgroundImage = "linear-gradient(lime, lime)";
+          if (idx + 1 !== adv)
+            arrayBars[idx + 1].style.backgroundImage =
+              "linear-gradient(red, red)";
+        }, i * animationSpeed);
+      }
+    } else {
+      const temp = arrayBars[idx].outerHTML;
+
+      setTimeout(() => {
+        arrayBars[idx].outerHTML = arrayBars[second].outerHTML;
+        arrayBars[second].outerHTML = temp;
+        arrayBars[second].style.backgroundImage = "linear-gradient(lime, lime)";
+        if (idx + 1 !== second)
+          arrayBars[idx + 1].style.backgroundImage =
+            "linear-gradient(red, red)";
       }, i * animationSpeed);
     }
   }
