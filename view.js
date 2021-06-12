@@ -46,56 +46,64 @@ export function mergeSort(animations) {
 }
 
 export function quickSort(animations) {
+  let initSet = [];
   for (let i = 0; i < animations.length; i++) {
     const arrayBars = document.getElementsByClassName("array-bar");
-    const [idx, second] = animations[i];
+    const [cmd] = animations[i].slice(-1);
 
-    if (second === "pivot") {
-      const pivotStyle = arrayBars[idx].style;
+    if (cmd === "init") {
+      const [pivotIdx, startIdx, endIdx] = animations[i];
+      initSet = [];
+      initSet.push(startIdx, endIdx);
+      const pivotStyle = arrayBars[pivotIdx].style;
+      const startStyle = arrayBars[startIdx].style;
+      const endStyle = arrayBars[endIdx].style;
       setTimeout(() => {
         for (const bar of arrayBars)
           bar.style.backgroundImage = "linear-gradient(blue, black)";
-        pivotStyle.backgroundImage = "linear-gradient(purple, purple)";
+        pivotStyle.style.setProperty(
+          "background-image",
+          "linear-gradient(purple, purple)",
+          "important"
+        );
+        if (pivotIdx !== startIdx)
+          startStyle.backgroundImage = "linear-gradient(lime, lime)";
+        if (pivotIdx !== endIdx)
+          endStyle.backgroundImage = "linear-gradient(lime, lime)";
       }, i * animationSpeed);
-    } else if (second === "adv") {
-      const advStyle = arrayBars[idx].style;
+    } else if (cmd === "swap") {
+      const [left, right] = animations[i];
+      const [startIdx, endIdx] = initSet;
       setTimeout(() => {
-        if (idx > 0) {
-          const prevStyle = arrayBars[idx - 1].style;
-          if (prevStyle.backgroundImage === "linear-gradient(lime, lime)")
-            prevStyle.backgroundImage = "linear-gradient(blue, black)";
+        for (let i = startIdx + 1; i <= left; i++) {
+          if (i !== left) {
+            arrayBars[i].style.backgroundImage = "linear-gradient(lime, lime)";
+            arrayBars[i - 1].style.backgroundImage =
+              "linear-gradient(blue, black)";
+          } else {
+            arrayBars[i].style.backgroundImage = "linear-gradient(red, red)";
+            arrayBars[i - 1].style.backgroundImage =
+              "linear-gradient(blue, black)";
+          }
         }
-        advStyle.backgroundImage = "linear-gradient(lime, lime)";
       }, i * animationSpeed);
-    } else if (second === "swap") {
-      const adv = animations[i - 1][0];
-      if (idx === adv) {
-        const waitStyle = arrayBars[idx].style;
-        setTimeout(() => {
-          waitStyle.backgroundImage = "linear-gradient(red, red)";
-        }, i * animationSpeed);
-      } else {
-        const temp = arrayBars[idx].outerHTML;
-
-        setTimeout(() => {
-          arrayBars[idx].outerHTML = arrayBars[adv].outerHTML;
-          arrayBars[adv].outerHTML = temp;
-          arrayBars[adv].style.backgroundImage = "linear-gradient(lime, lime)";
-          if (idx + 1 !== adv)
-            arrayBars[idx + 1].style.backgroundImage =
-              "linear-gradient(red, red)";
-        }, i * animationSpeed);
-      }
-    } else {
-      const temp = arrayBars[idx].outerHTML;
-
       setTimeout(() => {
-        arrayBars[idx].outerHTML = arrayBars[second].outerHTML;
-        arrayBars[second].outerHTML = temp;
-        arrayBars[second].style.backgroundImage = "linear-gradient(lime, lime)";
-        if (idx + 1 !== second)
-          arrayBars[idx + 1].style.backgroundImage =
-            "linear-gradient(red, red)";
+        for (let i = endIdx - 1; i >= right; i--) {
+          if (i !== right) {
+            arrayBars[i].style.backgroundImage = "linear-gradient(lime, lime)";
+            arrayBars[i + 1].style.backgroundImage =
+              "linear-gradient(blue, black)";
+          } else {
+            arrayBars[i].style.backgroundImage = "linear-gradient(red, red)";
+            arrayBars[i + 1].style.backgroundImage =
+              "linear-gradient(blue, black)";
+          }
+        }
+      }, i * animationSpeed);
+      setTimeout(() => {
+        const temp = arrayBars[left];
+        arrayBars[left].outerHTML = arrayBars[right].outerHTML;
+        arrayBars[right].outerHTML = temp.outerHTML;
       }, i * animationSpeed);
     }
   }

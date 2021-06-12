@@ -102,12 +102,12 @@ function partition(arr, animations, start, end) {
   let pivot = arr[pivotIdx];
   let i = start;
   let j = end;
-  animations.push(["pivot", pivotIdx], ["start", start], ["end", end]);
+  animations.push([pivotIdx, start, end, "init"]);
   while (i <= j) {
     while (arr[i] < pivot) i++;
     while (arr[j] > pivot) j--;
     if (i <= j) {
-      animations.push(["swap", i, j]);
+      animations.push([i, j, "swap"]);
       swap(arr, i, j);
       i++;
       j--;
