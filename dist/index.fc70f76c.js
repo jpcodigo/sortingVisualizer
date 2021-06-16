@@ -487,9 +487,10 @@ _parcelHelpers.export(exports, "getQuickSortAnimations", function () {
 const state = {
   array: []
 };
+let viewportWidth = document.documentElement.clientWidth;
 function resetArray() {
   const array = [];
-  const barCount = 30;
+  const barCount = viewportWidth / 7.5;
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
   }
@@ -549,12 +550,15 @@ function getQuickSortAnimations(arr) {
   return animations;
 }
 function quickSort(arr, animations, start = 0, end = arr.length - 1) {
-  let idx = partition(arr, animations, start, end);
-  if (start < idx - 1) {
-    quickSort(arr, animations, start, idx - 1);
-  }
-  if (idx < end) {
-    quickSort(arr, animations, idx);
+  let idx;
+  if (arr.length > 1) {
+    idx = partition(arr, animations, start, end);
+    if (start < idx - 1) {
+      quickSort(arr, animations, start, idx - 1);
+    }
+    if (idx < end) {
+      quickSort(arr, animations, idx, end);
+    }
   }
 }
 function partition(arr, animations, start, end) {
@@ -562,12 +566,12 @@ function partition(arr, animations, start, end) {
   let pivot = arr[pivotIdx];
   let i = start;
   let j = end;
-  animations.push([pivotIdx, start, end, "init"]);
+  animations.push(pivotIdx);
   while (i <= j) {
     while (arr[i] < pivot) i++;
     while (arr[j] > pivot) j--;
     if (i <= j) {
-      animations.push([i, j, "swap"]);
+      animations.push([i, j]);
       swap(arr, i, j);
       i++;
       j--;
@@ -636,7 +640,7 @@ _parcelHelpers.export(exports, "quickSort", function () {
   return quickSort;
 });
 const container = document.getElementById("array-container");
-const animationSpeed = 500;
+const animationSpeed = 5;
 function render(array) {
   while (container.firstChild) {
     container.removeChild(container.firstChild);
@@ -670,55 +674,42 @@ function mergeSort(animations) {
   }
 }
 function quickSort(animations) {
-  let initSet = [];
-  for (let i = 0; i < animations.length; i++) {
-    const arrayBars = document.getElementsByClassName("array-bar");
-    const [cmd] = animations[i].slice(-1);
-    if (cmd === "init") {
-      const [pivotIdx, startIdx, endIdx] = animations[i];
-      initSet = [];
-      initSet.push(startIdx, endIdx);
+  let i = 0;
+  const arrayBars = document.getElementsByClassName("array-bar");
+  while (animations.length > 0) {
+    if (!Array.isArray(animations[0])) {
+      const pivotIdx = animations.shift();
       const pivotStyle = arrayBars[pivotIdx].style;
-      const startStyle = arrayBars[startIdx].style;
-      const endStyle = arrayBars[endIdx].style;
       setTimeout(() => {
-        for (const bar of arrayBars) bar.style.backgroundImage = "linear-gradient(blue, black)";
-        pivotStyle.style.setProperty("background-image", "linear-gradient(purple, purple)", "important");
-        if (pivotIdx !== startIdx) startStyle.backgroundImage = "linear-gradient(lime, lime)";
-        if (pivotIdx !== endIdx) endStyle.backgroundImage = "linear-gradient(lime, lime)";
-      }, i * animationSpeed);
-    } else if (cmd === "swap") {
-      const [left, right] = animations[i];
-      const [startIdx, endIdx] = initSet;
-      setTimeout(() => {
-        for (let i = startIdx + 1; i <= left; i++) {
-          if (i !== left) {
-            arrayBars[i].style.backgroundImage = "linear-gradient(lime, lime)";
-            arrayBars[i - 1].style.backgroundImage = "linear-gradient(blue, black)";
-          } else {
-            arrayBars[i].style.backgroundImage = "linear-gradient(red, red)";
-            arrayBars[i - 1].style.backgroundImage = "linear-gradient(blue, black)";
-          }
+        for (const bar of arrayBars) {
+          bar.style.backgroundImage = "linear-gradient(blue, black)";
+          bar.style.width = ".4rem";
         }
+        pivotStyle.backgroundImage = "linear-gradient(white, white)";
+        pivotStyle.width = ".8rem";
       }, i * animationSpeed);
+    } else {
+      const [left, right] = animations.shift();
       setTimeout(() => {
-        for (let i = endIdx - 1; i >= right; i--) {
-          if (i !== right) {
-            arrayBars[i].style.backgroundImage = "linear-gradient(lime, lime)";
-            arrayBars[i + 1].style.backgroundImage = "linear-gradient(blue, black)";
-          } else {
-            arrayBars[i].style.backgroundImage = "linear-gradient(red, red)";
-            arrayBars[i + 1].style.backgroundImage = "linear-gradient(blue, black)";
-          }
-        }
-      }, i * animationSpeed);
-      setTimeout(() => {
-        const temp = arrayBars[left];
-        arrayBars[left].outerHTML = arrayBars[right].outerHTML;
-        arrayBars[right].outerHTML = temp.outerHTML;
+        const higher = arrayBars[left];
+        const lower = arrayBars[right];
+        higher.style.backgroundImage = "linear-gradient(lime, lime)";
+        lower.style.backgroundImage = "linear-gradient(red, red)";
+        const temp = document.createElement("div");
+        lower.parentNode.insertBefore(temp, lower);
+        higher.parentNode.insertBefore(lower, higher);
+        temp.parentNode.insertBefore(higher, temp);
+        temp.parentNode.removeChild(temp);
       }, i * animationSpeed);
     }
+    i++;
   }
+  setTimeout(() => {
+    for (const bar of arrayBars) {
+      bar.style.backgroundImage = "linear-gradient(blue, black)";
+      bar.style.width = ".4rem";
+    }
+  }, i * animationSpeed);
 }
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["6mXFT","4QWci"], "4QWci", "parcelRequire10b2")

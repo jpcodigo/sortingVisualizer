@@ -1,11 +1,11 @@
 export const state = {
   array: [],
 };
-//let viewportWidth = document.documentElement.clientWidth;
+let viewportWidth = document.documentElement.clientWidth;
 // viewport change event or media queries? viewportWidth / 5.5
 export function resetArray() {
   const array = [];
-  const barCount = 30;
+  const barCount = viewportWidth / 7.5;
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
   }
@@ -88,12 +88,15 @@ export function getQuickSortAnimations(arr) {
 }
 
 function quickSort(arr, animations, start = 0, end = arr.length - 1) {
-  let idx = partition(arr, animations, start, end);
-  if (start < idx - 1) {
-    quickSort(arr, animations, start, idx - 1);
-  }
-  if (idx < end) {
-    quickSort(arr, animations, idx);
+  let idx;
+  if (arr.length > 1) {
+    idx = partition(arr, animations, start, end);
+    if (start < idx - 1) {
+      quickSort(arr, animations, start, idx - 1);
+    }
+    if (idx < end) {
+      quickSort(arr, animations, idx, end);
+    }
   }
 }
 
@@ -102,12 +105,12 @@ function partition(arr, animations, start, end) {
   let pivot = arr[pivotIdx];
   let i = start;
   let j = end;
-  animations.push([pivotIdx, start, end, "init"]);
+  animations.push(pivotIdx);
   while (i <= j) {
     while (arr[i] < pivot) i++;
     while (arr[j] > pivot) j--;
     if (i <= j) {
-      animations.push([i, j, "swap"]);
+      animations.push([i, j]);
       swap(arr, i, j);
       i++;
       j--;
