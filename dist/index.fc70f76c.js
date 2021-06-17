@@ -586,6 +586,17 @@ function swap(arr, left, right) {
   arr[left] = arr[right];
   arr[right] = temp;
 }
+// HEAP SORT
+function sort(arr) {
+  const n = arr.length;
+  for (let i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i);
+  for (let i = n - 1; i > 0; i--) {
+    const temp = arr[0];
+    arr[0] = arr[i];
+    arr[i] = temp;
+    heapify(arr, i, 0);
+  }
+}
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"5gA8y":[function(require,module,exports) {
 "use strict";

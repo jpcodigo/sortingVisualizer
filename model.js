@@ -16,7 +16,10 @@ export function resetArray() {
 function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-// ALGORITHMS
+
+/****************************************************
+ *** ALGORITHMS
+ ****************************************************/
 
 // MERGE SORT
 
@@ -123,4 +126,18 @@ function swap(arr, left, right) {
   const temp = arr[left];
   arr[left] = arr[right];
   arr[right] = temp;
+}
+
+// HEAP SORT
+
+function sort(arr) {
+  const n = arr.length;
+
+  for (let i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i);
+  for (let i = n - 1; i > 0; i--) {
+    const temp = arr[0];
+    arr[0] = arr[i];
+    arr[i] = temp;
+    heapify(arr, i, 0);
+  }
 }
