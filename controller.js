@@ -4,6 +4,7 @@ import * as view from "./view";
 const genBtn = document.getElementById("generate");
 const mergeBtn = document.getElementById("merge");
 const quickBtn = document.getElementById("quick");
+const heapBtn = document.getElementById("heap");
 
 genBtn.addEventListener("click", resetRender);
 
@@ -17,6 +18,12 @@ quickBtn.addEventListener("click", () => {
   const { array } = model.state.array;
   const animations = model.getQuickSortAnimations(array);
   view.quickSort(animations);
+});
+
+heapBtn.addEventListener("click", () => {
+  const { array } = model.state.array;
+  const animations = model.getheapSortAnimations(array);
+  view.heapSort(animations);
 });
 
 function appLoaded() {

@@ -137,7 +137,7 @@ export function getHeapSortAnimations(arr) {
   return animations;
 }
 
-function heapSort(arr, animations) {
+export function heapSort(arr, animations) {
   const n = arr.length;
 
   for (let i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i);

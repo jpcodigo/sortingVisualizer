@@ -447,6 +447,7 @@ var _view = require("./view");
 const genBtn = document.getElementById("generate");
 const mergeBtn = document.getElementById("merge");
 const quickBtn = document.getElementById("quick");
+const heapBtn = document.getElementById("heap");
 genBtn.addEventListener("click", resetRender);
 mergeBtn.addEventListener("click", () => {
   const {array} = _model.state.array;
@@ -457,6 +458,11 @@ quickBtn.addEventListener("click", () => {
   const {array} = _model.state.array;
   const animations = _model.getQuickSortAnimations(array);
   _view.quickSort(animations);
+});
+heapBtn.addEventListener("click", () => {
+  const {array} = _model.state.array;
+  const animations = _model.getheapSortAnimations(array);
+  _view.heapSort(animations);
 });
 function appLoaded() {
   _model.resetArray();
@@ -485,6 +491,12 @@ _parcelHelpers.export(exports, "getMergeSortAnimations", function () {
 });
 _parcelHelpers.export(exports, "getQuickSortAnimations", function () {
   return getQuickSortAnimations;
+});
+_parcelHelpers.export(exports, "getHeapSortAnimations", function () {
+  return getHeapSortAnimations;
+});
+_parcelHelpers.export(exports, "heapSort", function () {
+  return heapSort;
 });
 const state = {
   array: []
@@ -586,8 +598,13 @@ function swap(arr, left, right) {
   arr[left] = arr[right];
   arr[right] = temp;
 }
-// HEAP SORT
-function sort(arr) {
+function getHeapSortAnimations(arr) {
+  const animations = [];
+  if (arr.length <= 1) return arr;
+  heapSort(arr, animations);
+  return animations;
+}
+function heapSort(arr, animations) {
   const n = arr.length;
   for (let i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i);
   for (let i = n - 1; i > 0; i--) {
@@ -595,6 +612,19 @@ function sort(arr) {
     arr[0] = arr[i];
     arr[i] = temp;
     heapify(arr, i, 0);
+  }
+}
+function heapify(arr, n, i) {
+  let largest = i;
+  const l = 2 * i + 1;
+  const r = 2 * i + 2;
+  if (l < n && arr[l] > arr[largest]) largest = l;
+  if (r < n && arr[r] > arr[largest]) largest = r;
+  if (largest !== i) {
+    const temp = arr[i];
+    arr[i] = arr[largest];
+    arr[largest] = temp;
+    heapify(arr, n, largest);
   }
 }
 
