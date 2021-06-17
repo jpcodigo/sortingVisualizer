@@ -22,7 +22,7 @@ quickBtn.addEventListener("click", () => {
 
 heapBtn.addEventListener("click", () => {
   const { array } = model.state.array;
-  const animations = model.getheapSortAnimations(array);
+  const animations = model.getHeapSortAnimations(array);
   view.heapSort(animations);
 });
 

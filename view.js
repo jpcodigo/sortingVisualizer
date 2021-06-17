@@ -85,3 +85,22 @@ export function quickSort(animations) {
     }
   }, i * animationSpeed);
 }
+
+export function heapSort(animations) {
+  const arrayBars = document.getElementsByClassName("array-bar");
+
+  for (let i = 0; i < animations.length; i++) {
+    const [left, right] = animations.shift();
+    setTimeout(() => {
+      const higher = arrayBars[left];
+      const lower = arrayBars[right];
+      higher.style.backgroundImage = "linear-gradient(lime, lime)";
+      lower.style.backgroundImage = "linear-gradient(red, red)";
+      const temp = document.createElement("div");
+      lower.parentNode.insertBefore(temp, lower);
+      higher.parentNode.insertBefore(lower, higher);
+      temp.parentNode.insertBefore(higher, temp);
+      temp.parentNode.removeChild(temp);
+    }, i * animationSpeed);
+  }
+}

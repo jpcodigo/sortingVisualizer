@@ -461,7 +461,7 @@ quickBtn.addEventListener("click", () => {
 });
 heapBtn.addEventListener("click", () => {
   const {array} = _model.state.array;
-  const animations = _model.getheapSortAnimations(array);
+  const animations = _model.getHeapSortAnimations(array);
   _view.heapSort(animations);
 });
 function appLoaded() {
@@ -606,25 +606,27 @@ function getHeapSortAnimations(arr) {
 }
 function heapSort(arr, animations) {
   const n = arr.length;
-  for (let i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i);
+  for (let i = n / 2 - 1; i >= 0; i--) heapify(animations, arr, n, i);
   for (let i = n - 1; i > 0; i--) {
+    animations.push([0, i]);
     const temp = arr[0];
     arr[0] = arr[i];
     arr[i] = temp;
-    heapify(arr, i, 0);
+    heapify(animations, arr, i, 0);
   }
 }
-function heapify(arr, n, i) {
+function heapify(animations, arr, n, i) {
   let largest = i;
   const l = 2 * i + 1;
   const r = 2 * i + 2;
   if (l < n && arr[l] > arr[largest]) largest = l;
   if (r < n && arr[r] > arr[largest]) largest = r;
   if (largest !== i) {
+    animations.push([i, largest]);
     const temp = arr[i];
     arr[i] = arr[largest];
     arr[largest] = temp;
-    heapify(arr, n, largest);
+    heapify(animations, arr, n, largest);
   }
 }
 
@@ -681,6 +683,9 @@ _parcelHelpers.export(exports, "mergeSort", function () {
 });
 _parcelHelpers.export(exports, "quickSort", function () {
   return quickSort;
+});
+_parcelHelpers.export(exports, "heapSort", function () {
+  return heapSort;
 });
 const container = document.getElementById("array-container");
 const animationSpeed = 5;
@@ -753,6 +758,23 @@ function quickSort(animations) {
       bar.style.width = ".4rem";
     }
   }, i * animationSpeed);
+}
+function heapSort(animations) {
+  const arrayBars = document.getElementsByClassName("array-bar");
+  for (let i = 0; i < animations.length; i++) {
+    const [left, right] = animations.shift();
+    setTimeout(() => {
+      const higher = arrayBars[left];
+      const lower = arrayBars[right];
+      higher.style.backgroundImage = "linear-gradient(lime, lime)";
+      lower.style.backgroundImage = "linear-gradient(red, red)";
+      const temp = document.createElement("div");
+      lower.parentNode.insertBefore(temp, lower);
+      higher.parentNode.insertBefore(lower, higher);
+      temp.parentNode.insertBefore(higher, temp);
+      temp.parentNode.removeChild(temp);
+    }, i * animationSpeed);
+  }
 }
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}]},["6mXFT","4QWci"], "4QWci", "parcelRequire10b2")
