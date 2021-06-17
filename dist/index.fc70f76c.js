@@ -609,6 +609,8 @@ function heapSort(arr, animations) {
   for (let i = n / 2 - 1; i >= 0; i--) heapify(animations, arr, n, i);
   for (let i = n - 1; i > 0; i--) {
     animations.push([0, i]);
+    animations.push([0, i]);
+    animations.push([0, i]);
     const temp = arr[0];
     arr[0] = arr[i];
     arr[i] = temp;
@@ -622,6 +624,8 @@ function heapify(animations, arr, n, i) {
   if (l < n && arr[l] > arr[largest]) largest = l;
   if (r < n && arr[r] > arr[largest]) largest = r;
   if (largest !== i) {
+    animations.push([i, largest]);
+    animations.push([i, largest]);
     animations.push([i, largest]);
     const temp = arr[i];
     arr[i] = arr[largest];
@@ -760,20 +764,30 @@ function quickSort(animations) {
   }, i * animationSpeed);
 }
 function heapSort(animations) {
-  const arrayBars = document.getElementsByClassName("array-bar");
   for (let i = 0; i < animations.length; i++) {
-    const [left, right] = animations.shift();
-    setTimeout(() => {
-      const higher = arrayBars[left];
-      const lower = arrayBars[right];
-      higher.style.backgroundImage = "linear-gradient(lime, lime)";
-      lower.style.backgroundImage = "linear-gradient(red, red)";
-      const temp = document.createElement("div");
-      lower.parentNode.insertBefore(temp, lower);
-      higher.parentNode.insertBefore(lower, higher);
-      temp.parentNode.insertBefore(higher, temp);
-      temp.parentNode.removeChild(temp);
-    }, i * animationSpeed);
+    const arrayBars = document.getElementsByClassName("array-bar");
+    const isColorChange = i % 3 !== 2;
+    if (isColorChange) {
+      const [barOneIdx, barTwoIdx] = animations[i];
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      const gradient = i % 3 === 0 ? "linear-gradient(black, lime)" : "linear-gradient(blue, black)";
+      setTimeout(() => {
+        barOneStyle.backgroundImage = gradient;
+        barTwoStyle.backgroundImage = gradient;
+      }, i * animationSpeed);
+    } else {
+      setTimeout(() => {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOne = arrayBars[barOneIdx];
+        const barTwo = arrayBars[barTwoIdx];
+        const temp = document.createElement("div");
+        barOne.parentNode.insertBefore(temp, barOne);
+        barTwo.parentNode.insertBefore(barOne, barTwo);
+        temp.parentNode.insertBefore(barTwo, temp);
+        temp.parentNode.removeChild(temp);
+      }, i * animationSpeed);
+    }
   }
 }
 

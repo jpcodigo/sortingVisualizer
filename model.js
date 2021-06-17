@@ -143,6 +143,8 @@ export function heapSort(arr, animations) {
   for (let i = n / 2 - 1; i >= 0; i--) heapify(animations, arr, n, i);
   for (let i = n - 1; i > 0; i--) {
     animations.push([0, i]);
+    animations.push([0, i]);
+    animations.push([0, i]);
     const temp = arr[0];
     arr[0] = arr[i];
     arr[i] = temp;
@@ -158,6 +160,8 @@ function heapify(animations, arr, n, i) {
   if (l < n && arr[l] > arr[largest]) largest = l;
   if (r < n && arr[r] > arr[largest]) largest = r;
   if (largest !== i) {
+    animations.push([i, largest]);
+    animations.push([i, largest]);
     animations.push([i, largest]);
     const temp = arr[i];
     arr[i] = arr[largest];

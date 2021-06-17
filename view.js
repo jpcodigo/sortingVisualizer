@@ -87,20 +87,33 @@ export function quickSort(animations) {
 }
 
 export function heapSort(animations) {
-  const arrayBars = document.getElementsByClassName("array-bar");
-
   for (let i = 0; i < animations.length; i++) {
-    const [left, right] = animations.shift();
-    setTimeout(() => {
-      const higher = arrayBars[left];
-      const lower = arrayBars[right];
-      higher.style.backgroundImage = "linear-gradient(lime, lime)";
-      lower.style.backgroundImage = "linear-gradient(red, red)";
-      const temp = document.createElement("div");
-      lower.parentNode.insertBefore(temp, lower);
-      higher.parentNode.insertBefore(lower, higher);
-      temp.parentNode.insertBefore(higher, temp);
-      temp.parentNode.removeChild(temp);
-    }, i * animationSpeed);
+    const arrayBars = document.getElementsByClassName("array-bar");
+    const isColorChange = i % 3 !== 2;
+    if (isColorChange) {
+      const [barOneIdx, barTwoIdx] = animations[i];
+
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      const gradient =
+        i % 3 === 0
+          ? "linear-gradient(black, lime)"
+          : "linear-gradient(blue, black)";
+      setTimeout(() => {
+        barOneStyle.backgroundImage = gradient;
+        barTwoStyle.backgroundImage = gradient;
+      }, i * animationSpeed);
+    } else {
+      setTimeout(() => {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOne = arrayBars[barOneIdx];
+        const barTwo = arrayBars[barTwoIdx];
+        const temp = document.createElement("div");
+        barOne.parentNode.insertBefore(temp, barOne);
+        barTwo.parentNode.insertBefore(barOne, barTwo);
+        temp.parentNode.insertBefore(barTwo, temp);
+        temp.parentNode.removeChild(temp);
+      }, i * animationSpeed);
+    }
   }
 }
