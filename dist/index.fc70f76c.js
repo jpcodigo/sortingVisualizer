@@ -498,6 +498,9 @@ _parcelHelpers.export(exports, "getHeapSortAnimations", function () {
 _parcelHelpers.export(exports, "heapSort", function () {
   return heapSort;
 });
+_parcelHelpers.export(exports, "getBubbleSortAnimations", function () {
+  return getBubbleSortAnimations;
+});
 const state = {
   array: []
 };
@@ -606,9 +609,9 @@ function getHeapSortAnimations(arr) {
   return animations;
 }
 function heapSort(arr, animations) {
-  const n = arr.length;
-  for (let i = n / 2 - 1; i >= 0; i--) heapify(animations, arr, n, i);
-  for (let i = n - 1; i > 0; i--) {
+  const len = arr.length;
+  for (let i = len / 2 - 1; i >= 0; i--) heapify(animations, arr, len, i);
+  for (let i = len - 1; i > 0; i--) {
     animations.push([0, i]);
     animations.push([0, i]);
     animations.push([0, i]);
@@ -618,12 +621,12 @@ function heapSort(arr, animations) {
     heapify(animations, arr, i, 0);
   }
 }
-function heapify(animations, arr, n, i) {
+function heapify(animations, arr, len, i) {
   let largest = i;
   const l = 2 * i + 1;
   const r = 2 * i + 2;
-  if (l < n && arr[l] > arr[largest]) largest = l;
-  if (r < n && arr[r] > arr[largest]) largest = r;
+  if (l < len && arr[l] > arr[largest]) largest = l;
+  if (r < len && arr[r] > arr[largest]) largest = r;
   if (largest !== i) {
     animations.push([i, largest]);
     animations.push([i, largest]);
@@ -631,7 +634,32 @@ function heapify(animations, arr, n, i) {
     const temp = arr[i];
     arr[i] = arr[largest];
     arr[largest] = temp;
-    heapify(animations, arr, n, largest);
+    heapify(animations, arr, len, largest);
+  }
+}
+function getBubbleSortAnimations(arr) {
+  const animations = [];
+  if (arr.length <= 1) return arr;
+  bubbleSort(arr, animations);
+  return animations;
+}
+function bubbleSort(arr) {
+  const len = arr.length;
+  let i, j;
+  let isSwapped = false;
+  for (i = 0; i < len; i++) {
+    isSwapped = false;
+    for (j = 0; j < len; j++) {
+      if (arr[j] > arr[j + 1]) {
+        const temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+        isSwapped = true;
+      }
+    }
+    if (!isSwapped) {
+      break;
+    }
   }
 }
 
