@@ -94,7 +94,7 @@ export function heapSort(animations) {
       setTimeout(() => {
         barOneStyle.backgroundImage = gradient;
         barTwoStyle.backgroundImage = gradient;
-      }, i * animationSpeed);
+      }, i * (animationSpeed / 2));
     } else {
       setTimeout(() => {
         const barOne = arrayBars[barOneIdx];
@@ -105,7 +105,39 @@ export function heapSort(animations) {
         barTwo.parentNode.insertBefore(barOne, barTwo);
         temp.parentNode.insertBefore(barTwo, temp);
         temp.parentNode.removeChild(temp);
-      }, i * animationSpeed);
+      }, i * (animationSpeed / 2));
+    }
+  }
+}
+
+export function bubbleSort(animations) {
+  for (let i = 0; i < animations.length; i++) {
+    const arrayBars = document.getElementsByClassName("array-bar");
+    const isColorChange = i % 3 !== 2;
+    const [barOneIdx, barTwoIdx] = animations[i];
+
+    if (isColorChange) {
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      const gradient =
+        i % 3 === 0
+          ? "linear-gradient(black, lime)"
+          : "linear-gradient(blue, black)";
+      setTimeout(() => {
+        barOneStyle.backgroundImage = gradient;
+        barTwoStyle.backgroundImage = gradient;
+      }, i * (animationSpeed / 5));
+    } else {
+      setTimeout(() => {
+        const barOne = arrayBars[barOneIdx];
+        const barTwo = arrayBars[barTwoIdx];
+        const temp = document.createElement("div");
+
+        barOne.parentNode.insertBefore(temp, barOne);
+        barTwo.parentNode.insertBefore(barOne, barTwo);
+        temp.parentNode.insertBefore(barTwo, temp);
+        temp.parentNode.removeChild(temp);
+      }, i * (animationSpeed / 5));
     }
   }
 }

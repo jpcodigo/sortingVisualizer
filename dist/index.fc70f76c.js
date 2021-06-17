@@ -448,6 +448,7 @@ const genBtn = document.getElementById("generate");
 const mergeBtn = document.getElementById("merge");
 const quickBtn = document.getElementById("quick");
 const heapBtn = document.getElementById("heap");
+const bubbleBtn = document.getElementById("bubble");
 genBtn.addEventListener("click", resetRender);
 mergeBtn.addEventListener("click", () => {
   const {array} = _model.state.array;
@@ -464,18 +465,23 @@ heapBtn.addEventListener("click", () => {
   const animations = _model.getHeapSortAnimations(array);
   _view.heapSort(animations);
 });
+bubbleBtn.addEventListener("click", () => {
+  const {array} = _model.state.array;
+  const animations = _model.getBubbleSortAnimations(array);
+  _view.bubbleSort(animations);
+});
 function appLoaded() {
+  _model.resetArray();
+  const {array} = _model.state.array;
+  _view.render(array);
+}
+function resetRender() {
   _model.resetArray();
   const {array} = _model.state.array;
   _view.render(array);
 }
 appLoaded();
 window.onresize = resetRender;
-function resetRender() {
-  _model.resetArray();
-  const {array} = _model.state.array;
-  _view.render(array);
-}
 
 },{"./model":"4fBCO","./view":"6bVbH"}],"4fBCO":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
@@ -643,7 +649,7 @@ function getBubbleSortAnimations(arr) {
   bubbleSort(arr, animations);
   return animations;
 }
-function bubbleSort(arr) {
+function bubbleSort(arr, animations) {
   const len = arr.length;
   let i, j;
   let isSwapped = false;
@@ -651,6 +657,9 @@ function bubbleSort(arr) {
     isSwapped = false;
     for (j = 0; j < len; j++) {
       if (arr[j] > arr[j + 1]) {
+        animations.push([j, j + 1]);
+        animations.push([j, j + 1]);
+        animations.push([j, j + 1]);
         const temp = arr[j];
         arr[j] = arr[j + 1];
         arr[j + 1] = temp;
@@ -719,6 +728,9 @@ _parcelHelpers.export(exports, "quickSort", function () {
 });
 _parcelHelpers.export(exports, "heapSort", function () {
   return heapSort;
+});
+_parcelHelpers.export(exports, "bubbleSort", function () {
+  return bubbleSort;
 });
 const container = document.getElementById("array-container");
 const animationSpeed = 5;
@@ -792,7 +804,7 @@ function heapSort(animations) {
       setTimeout(() => {
         barOneStyle.backgroundImage = gradient;
         barTwoStyle.backgroundImage = gradient;
-      }, i * animationSpeed);
+      }, i * (animationSpeed / 2));
     } else {
       setTimeout(() => {
         const barOne = arrayBars[barOneIdx];
@@ -802,7 +814,33 @@ function heapSort(animations) {
         barTwo.parentNode.insertBefore(barOne, barTwo);
         temp.parentNode.insertBefore(barTwo, temp);
         temp.parentNode.removeChild(temp);
-      }, i * animationSpeed);
+      }, i * (animationSpeed / 2));
+    }
+  }
+}
+function bubbleSort(animations) {
+  for (let i = 0; i < animations.length; i++) {
+    const arrayBars = document.getElementsByClassName("array-bar");
+    const isColorChange = i % 3 !== 2;
+    const [barOneIdx, barTwoIdx] = animations[i];
+    if (isColorChange) {
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      const gradient = i % 3 === 0 ? "linear-gradient(black, lime)" : "linear-gradient(blue, black)";
+      setTimeout(() => {
+        barOneStyle.backgroundImage = gradient;
+        barTwoStyle.backgroundImage = gradient;
+      }, i * (animationSpeed / 5));
+    } else {
+      setTimeout(() => {
+        const barOne = arrayBars[barOneIdx];
+        const barTwo = arrayBars[barTwoIdx];
+        const temp = document.createElement("div");
+        barOne.parentNode.insertBefore(temp, barOne);
+        barTwo.parentNode.insertBefore(barOne, barTwo);
+        temp.parentNode.insertBefore(barTwo, temp);
+        temp.parentNode.removeChild(temp);
+      }, i * (animationSpeed / 5));
     }
   }
 }

@@ -115,6 +115,7 @@ function partition(arr, animations, start, end) {
       animations.push([i, j, pivotIdx]);
       animations.push([i, j, pivotIdx]);
       animations.push([i, j, pivotIdx]);
+
       swap(arr, i, j);
       i++;
       j--;
@@ -146,6 +147,7 @@ export function heapSort(arr, animations) {
     animations.push([0, i]);
     animations.push([0, i]);
     animations.push([0, i]);
+
     const temp = arr[0];
     arr[0] = arr[i];
     arr[i] = temp;
@@ -164,6 +166,7 @@ function heapify(animations, arr, len, i) {
     animations.push([i, largest]);
     animations.push([i, largest]);
     animations.push([i, largest]);
+
     const temp = arr[i];
     arr[i] = arr[largest];
     arr[largest] = temp;
@@ -181,7 +184,7 @@ export function getBubbleSortAnimations(arr) {
   return animations;
 }
 
-function bubbleSort(arr) {
+function bubbleSort(arr, animations) {
   const len = arr.length;
   let i, j;
   let isSwapped = false;
@@ -191,6 +194,10 @@ function bubbleSort(arr) {
 
     for (j = 0; j < len; j++) {
       if (arr[j] > arr[j + 1]) {
+        animations.push([j, j + 1]);
+        animations.push([j, j + 1]);
+        animations.push([j, j + 1]);
+
         const temp = arr[j];
         arr[j] = arr[j + 1];
         arr[j + 1] = temp;
