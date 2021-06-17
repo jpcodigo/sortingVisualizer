@@ -1,11 +1,12 @@
 export const state = {
   array: [],
 };
-let viewportWidth = document.documentElement.clientWidth;
-// viewport change event or media queries? viewportWidth / 5.5
+
 export function resetArray() {
   const array = [];
+  const viewportWidth = document.documentElement.clientWidth;
   const barCount = viewportWidth / 7.5;
+
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
   }
@@ -15,7 +16,6 @@ export function resetArray() {
 function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
 // ALGORITHMS
 
 // MERGE SORT

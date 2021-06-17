@@ -447,11 +447,7 @@ var _view = require("./view");
 const genBtn = document.getElementById("generate");
 const mergeBtn = document.getElementById("merge");
 const quickBtn = document.getElementById("quick");
-genBtn.addEventListener("click", () => {
-  _model.resetArray();
-  const {array} = _model.state.array;
-  _view.render(array);
-});
+genBtn.addEventListener("click", resetRender);
 mergeBtn.addEventListener("click", () => {
   const {array} = _model.state.array;
   const animations = _model.getMergeSortAnimations(array);
@@ -468,6 +464,12 @@ function appLoaded() {
   _view.render(array);
 }
 appLoaded();
+window.onresize = resetRender;
+function resetRender() {
+  _model.resetArray();
+  const {array} = _model.state.array;
+  _view.render(array);
+}
 
 },{"./model":"4fBCO","./view":"6bVbH"}],"4fBCO":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
@@ -487,9 +489,9 @@ _parcelHelpers.export(exports, "getQuickSortAnimations", function () {
 const state = {
   array: []
 };
-let viewportWidth = document.documentElement.clientWidth;
 function resetArray() {
   const array = [];
+  const viewportWidth = document.documentElement.clientWidth;
   const barCount = viewportWidth / 7.5;
   for (let i = 0; i < barCount; i++) {
     array.push(randomIntFromInterval(5, 750));
