@@ -580,12 +580,13 @@ function partition(arr, animations, start, end) {
   let pivot = arr[pivotIdx];
   let i = start;
   let j = end;
-  animations.push(pivotIdx);
   while (i <= j) {
     while (arr[i] < pivot) i++;
     while (arr[j] > pivot) j--;
     if (i <= j) {
-      animations.push([i, j]);
+      animations.push([i, j, pivotIdx]);
+      animations.push([i, j, pivotIdx]);
+      animations.push([i, j, pivotIdx]);
       swap(arr, i, j);
       i++;
       j--;
@@ -767,8 +768,8 @@ function heapSort(animations) {
   for (let i = 0; i < animations.length; i++) {
     const arrayBars = document.getElementsByClassName("array-bar");
     const isColorChange = i % 3 !== 2;
+    const [barOneIdx, barTwoIdx] = animations[i];
     if (isColorChange) {
-      const [barOneIdx, barTwoIdx] = animations[i];
       const barOneStyle = arrayBars[barOneIdx].style;
       const barTwoStyle = arrayBars[barTwoIdx].style;
       const gradient = i % 3 === 0 ? "linear-gradient(black, lime)" : "linear-gradient(blue, black)";
@@ -778,7 +779,6 @@ function heapSort(animations) {
       }, i * animationSpeed);
     } else {
       setTimeout(() => {
-        const [barOneIdx, barTwoIdx] = animations[i];
         const barOne = arrayBars[barOneIdx];
         const barTwo = arrayBars[barTwoIdx];
         const temp = document.createElement("div");

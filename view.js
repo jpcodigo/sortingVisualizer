@@ -90,9 +90,8 @@ export function heapSort(animations) {
   for (let i = 0; i < animations.length; i++) {
     const arrayBars = document.getElementsByClassName("array-bar");
     const isColorChange = i % 3 !== 2;
+    const [barOneIdx, barTwoIdx] = animations[i];
     if (isColorChange) {
-      const [barOneIdx, barTwoIdx] = animations[i];
-
       const barOneStyle = arrayBars[barOneIdx].style;
       const barTwoStyle = arrayBars[barTwoIdx].style;
       const gradient =
@@ -105,7 +104,6 @@ export function heapSort(animations) {
       }, i * animationSpeed);
     } else {
       setTimeout(() => {
-        const [barOneIdx, barTwoIdx] = animations[i];
         const barOne = arrayBars[barOneIdx];
         const barTwo = arrayBars[barTwoIdx];
         const temp = document.createElement("div");
