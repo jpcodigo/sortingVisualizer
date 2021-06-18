@@ -1,5 +1,5 @@
 const container = document.getElementById("array-container");
-const animationSpeed = 5;
+const animationSpeed = 3;
 
 export function render(array) {
   while (container.firstChild) {
@@ -94,7 +94,7 @@ export function heapSort(animations) {
       setTimeout(() => {
         barOneStyle.backgroundImage = gradient;
         barTwoStyle.backgroundImage = gradient;
-      }, i * (animationSpeed / 2));
+      }, i * animationSpeed);
     } else {
       setTimeout(() => {
         const barOne = arrayBars[barOneIdx];
@@ -105,7 +105,7 @@ export function heapSort(animations) {
         barTwo.parentNode.insertBefore(barOne, barTwo);
         temp.parentNode.insertBefore(barTwo, temp);
         temp.parentNode.removeChild(temp);
-      }, i * (animationSpeed / 2));
+      }, i * animationSpeed);
     }
   }
 }
@@ -126,7 +126,7 @@ export function bubbleSort(animations) {
       setTimeout(() => {
         barOneStyle.backgroundImage = gradient;
         barTwoStyle.backgroundImage = gradient;
-      }, i * (animationSpeed / 5));
+      }, i * animationSpeed);
     } else {
       setTimeout(() => {
         const barOne = arrayBars[barOneIdx];
@@ -137,7 +137,7 @@ export function bubbleSort(animations) {
         barTwo.parentNode.insertBefore(barOne, barTwo);
         temp.parentNode.insertBefore(barTwo, temp);
         temp.parentNode.removeChild(temp);
-      }, i * (animationSpeed / 5));
+      }, i * animationSpeed);
     }
   }
 }
